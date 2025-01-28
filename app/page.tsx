@@ -6,6 +6,7 @@ import { CodeSplitMessage } from './components/CodeSplitMessage';
 import dynamic from 'next/dynamic';
 import './split.css';
 import React from 'react';
+import initSwc, { transformSync } from "@swc/wasm-web";
 
 const SplitPane = dynamic(() => import('react-split'), {
   ssr: false,
@@ -23,6 +24,16 @@ export default function Home() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [isClient, setIsClient] = React.useState(false);
   const [mounted, setMounted] = useState(false);
+  const [initialized, setInitialized] = useState(false);
+
+  useEffect(() => {
+    async function importAndRunSwcOnMount() {
+      await initSwc();
+      setInitialized(true);
+    }
+    importAndRunSwcOnMount();
+  }, []);
+
 
   useEffect(() => {
     setIsClient(true);
@@ -73,12 +84,6 @@ export default function Home() {
 
   const renderMessageContent = (content: string, role: 'user' | 'assistant') => {
     if (content.includes("<code>") && content.includes("</code>")) {
-      const codeContent = content.substring(
-        content.indexOf("<code>") + 6,
-        content.indexOf("</code>")
-      );
-      // Convert code content to base64 to use as URL parameter
-      const base64Code = Buffer.from(codeContent).toString('base64');
       return null
     }
     return (
@@ -98,8 +103,8 @@ export default function Home() {
         content.indexOf("<code>") + 6,
         content.indexOf("</code>")
       );
-      // Convert code content to base64 to use as URL parameter
-      const base64Code = Buffer.from(codeContent).toString('base64');
+      console.log("codeContent", codeContent);
+      const encodedCode = encodeURIComponent(codeContent);
       return (
         <div className={`flex ${role === 'assistant' ? 'justify-start' : 'justify-end'} mb-4`}>
         <div className={`w-full rounded-lg ${
@@ -107,7 +112,7 @@ export default function Home() {
         }`}>
   
         <iframe
-          src={`/code/${base64Code}`}
+          src={`/code/${encodedCode}`}
           className="w-full h-[calc(100vh)] border-0 rounded-md bg-transparent"
           title="Code Preview"
           loading="lazy"

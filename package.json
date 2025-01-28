@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
+    "@swc/wasm-web": "^1.10.11",
     "@types/react-syntax-highlighter": "^15.5.13",
     "next": "15.1.6",
     "openai": "^4.80.1",
