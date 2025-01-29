@@ -2,7 +2,6 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { PaperAirplaneIcon } from '@heroicons/react/24/solid';
-import { CodeSplitMessage } from './components/CodeSplitMessage';
 import dynamic from 'next/dynamic';
 import './split.css';
 import React from 'react';

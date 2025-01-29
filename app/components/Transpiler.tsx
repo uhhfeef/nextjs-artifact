@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import initSwc, { transformSync } from "@swc/wasm-web";
+import DynamicCharts from './DynamicCharts';
 
 export default function Transpiler({ code }: { code: string }) {
     const [initialized, setInitialized] = useState(false);
@@ -24,7 +25,7 @@ export default function Transpiler({ code }: { code: string }) {
               syntax: "ecmascript",
               jsx: true
             },
-            target: "es5",
+            target: "es2018",
             loose: false,
             minify: {
               compress: false,
@@ -47,10 +48,12 @@ export default function Transpiler({ code }: { code: string }) {
     if (!initialized) {
       return <div>Initializing transpiler...</div>;
     }
+    console.log("transpiledCode:", result);
 
     return (
         <div suppressHydrationWarning>
             <pre>{result}</pre>
+            <DynamicCharts transpiledCode={result} />
         </div>
     );
 }
