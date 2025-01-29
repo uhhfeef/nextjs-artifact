@@ -18,7 +18,25 @@ export default function Transpiler({ code }: { code: string }) {
     useEffect(() => {
       if (!initialized) return;
       try {
-        const output = transformSync(code, {});
+        const output = transformSync(code, {
+          jsc: {
+            parser: {
+              syntax: "ecmascript",
+              jsx: true
+            },
+            target: "es5",
+            loose: false,
+            minify: {
+              compress: false,
+              mangle: false
+            }
+          },
+          module: {
+            type: "es6"
+          },
+          minify: false,
+          isModule: true
+        });
         setResult(output.code);
       } catch (error) {
         console.error('Transformation error:', error);
