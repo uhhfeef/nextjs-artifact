@@ -27,7 +27,7 @@ export default function ChartRenderer({ transpiledCode }: ChartRendererProps) {
         <script src="https://cdnjs.cloudflare.com/ajax/libs/prop-types/15.8.1/prop-types.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/recharts/2.10.4/Recharts.js"></script>
         <style>
-          body { margin: 0; padding: 16px; }
+          body { margin: 0; padding: 16px; background-color: black; color: white; }
         </style>
       </head>
       <body>

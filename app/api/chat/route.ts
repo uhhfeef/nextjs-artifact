@@ -12,7 +12,7 @@ export async function POST(req: Request) {
     const completion = await openai.chat.completions.create({
       model: "gpt-4o-mini",
       messages: [
-        {role: 'system', content: 'You are a helpful assistant. if user asks for code, give response inside <code></code>. Only send the code and no fluff'},
+        {role: 'system', content: 'You are a helpful assistant. only if user asks for code, should you provide a response inside <code></code>. Only send the code and no fluff'},
         ...messages
       ],
     });
