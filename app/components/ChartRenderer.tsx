@@ -69,7 +69,7 @@ export default function ChartRenderer({ transpiledCode }: ChartRendererProps) {
     <iframe
       ref={iframeRef}
       style={{ width: '100%', height: '400px', border: 'none' }}
-      sandbox="allow-scripts"
+      sandbox="allow-scripts allow-same-origin allow-popups allow-modals"
       title="Chart Renderer"
     />
   );

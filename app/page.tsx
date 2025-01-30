@@ -6,6 +6,7 @@ import dynamic from 'next/dynamic';
 import './split.css';
 import React from 'react';
 import initSwc, { transformSync } from "@swc/wasm-web";
+import ChartRenderer from './components/ChartRenderer';
 
 const SplitPane = dynamic(() => import('react-split'), {
   ssr: false,
@@ -15,6 +16,54 @@ interface Message {
   role: 'user' | 'assistant';
   content: string;
 }
+
+const CodePreview = ({ code }: { code: string }) => {
+  const [transpiledCode, setTranspiledCode] = useState<string>("");
+  const [initialized, setInitialized] = useState(false);
+
+  useEffect(() => {
+    async function importAndRunSwcOnMount() {
+      await initSwc();
+      setInitialized(true);
+    }
+    importAndRunSwcOnMount();
+  }, []);
+
+  useEffect(() => {
+    if (!initialized) return;
+    try {
+      const output = transformSync(code, {
+        jsc: {
+          parser: {
+            syntax: "ecmascript",
+            jsx: true
+          },
+          target: "es2018",
+          loose: false,
+          minify: {
+            compress: false,
+            mangle: false
+          }
+        },
+        module: {
+          type: "es6"
+        },
+        minify: false,
+        isModule: true
+      });
+      setTranspiledCode(output.code);
+    } catch (error) {
+      console.error('Transformation error:', error);
+      setTranspiledCode('Error transforming code');
+    }
+  }, [initialized, code]);
+
+  if (!initialized) {
+    return <div>Initializing transpiler...</div>;
+  }
+
+  return <ChartRenderer transpiledCode={transpiledCode} />;
+};
 
 export default function Home() {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -103,20 +152,14 @@ export default function Home() {
         content.indexOf("</code>")
       );
       console.log("codeContent", codeContent);
-      const encodedCode = encodeURIComponent(codeContent);
+
       return (
         <div className={`flex ${role === 'assistant' ? 'justify-start' : 'justify-end'} mb-4`}>
-        <div className={`w-full rounded-lg ${
-          role === 'assistant' ? 'bg-gray-700 text-white' : 'bg-blue-600 text-white'
-        }`}>
-  
-        <iframe
-          src={`/code/${encodedCode}`}
-          className="w-full h-[calc(100vh)] border-0 rounded-md bg-transparent"
-          title="Code Preview"
-          loading="lazy"
-        />
-        </div>
+          <div className={`w-full rounded-lg ${
+            role === 'assistant' ? 'bg-gray-700 text-white' : 'bg-blue-600 text-white'
+          }`}>
+            <CodePreview code={codeContent} />
+          </div>
         </div>
       );
     }
