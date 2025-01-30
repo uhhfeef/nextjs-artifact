@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import initSwc, { transformSync } from "@swc/wasm-web";
 import DynamicCharts from './DynamicCharts';
+import ChartRenderer from './ChartRenderer';
 
 export default function Transpiler({ code }: { code: string }) {
     const [initialized, setInitialized] = useState(false);
@@ -52,8 +53,8 @@ export default function Transpiler({ code }: { code: string }) {
 
     return (
         <div suppressHydrationWarning>
-            <pre>{result}</pre>
-            <DynamicCharts transpiledCode={result} />
+            {/* <pre>{result}</pre> */}
+            <ChartRenderer transpiledCode={result} />
         </div>
     );
 }
