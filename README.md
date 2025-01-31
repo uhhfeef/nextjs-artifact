@@ -1,36 +1,78 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Next.js Artifact - Claude-Style Chart Rendering
 
-## Getting Started
+A Next.js implementation that successfully replicates Anthropic Claude's Artifacts feature, specifically focusing on secure and isolated chart rendering using Recharts within iframes.
 
-First, run the development server:
+## 📸 Demo
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+![Chart Renderer Demo](/public/assets/chart-demo.png)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🎯 Problem Solved
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+This project tackles a significant challenge in modern web applications: safely rendering interactive charts in an isolated environment while maintaining full functionality. Inspired by Anthropic Claude's Artifacts feature, I've created a solution that:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Isolates chart rendering to prevent conflicts with the main application
+- Maintains security through iframe sandboxing
+- Handles dynamic chart generation without compromising performance
+- Successfully replicates the functionality seen in Claude's Artifacts
 
-## Learn More
+## 🚀 Key Features
 
-To learn more about Next.js, take a look at the following resources:
+- **Isolated Chart Rendering**: Charts are rendered in a separate iframe environment
+- **Secure Dependency Management**: CDN dependencies loaded in correct order
+- **Dynamic Code Processing**: Automatic transpilation and code adjustment
+- **Error Handling**: Robust error management for chart rendering
+- **Modern Tech Stack**: Built with Next.js and TypeScript
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🛠️ Technical Implementation
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+The core of this solution lies in the `ChartRenderer` component, which:
 
-## Deploy on Vercel
+1. Creates an isolated iframe environment
+2. Loads dependencies in the correct sequence:
+   ```html
+   - React 18.2.0
+   - ReactDOM 18.2.0
+   - PropTypes 15.8.1
+   - Recharts 2.10.4
+   ```
+3. Processes and adjusts code for iframe compatibility
+4. Handles errors and provides appropriate styling
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🔧 How It Works
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. **Isolation**: Each chart is rendered in its own iframe, preventing conflicts with the main application's dependencies
+2. **Dependency Management**: CDN resources are loaded from reliable sources (cdnjs)
+3. **Code Processing**: 
+   - Module imports are removed
+   - Exports are adjusted for iframe compatibility
+   - Global variable access is properly handled
+
+## 📚 Key Learnings
+
+- Proper script loading order is crucial for dependency management
+- CDN source selection impacts reliability (cdnjs vs unpkg)
+- PropTypes are essential for React component validation
+- Iframe isolation provides better security and prevents conflicts
+
+## 🎉 Success Metrics
+
+The implementation successfully replicates Claude's Artifacts functionality, providing:
+- Isolated chart rendering
+- Reliable performance
+- Clean integration with Next.js
+- Secure dependency management
+
+## 🚀 Getting Started
+
+1. Clone the repository
+2. Install dependencies: `npm install`
+3. Run the development server: `npm run dev`
+4. Visit `http://localhost:3000`
+
+## 📝 License
+
+MIT
+
+---
+
+Built with ❤️ by Afeef Khan
